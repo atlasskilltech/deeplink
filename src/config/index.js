@@ -34,7 +34,7 @@ function list(name, fallback = []) {
 }
 
 const scheme = str('DEEPLINK_SCHEME', 'https');
-const host = str('DEEPLINK_HOST', 'app.atlasskilltech.app');
+const host = str('DEEPLINK_HOST', 'deeplink.atlasskilltech.app');
 
 const config = {
   env: str('NODE_ENV', 'development'),

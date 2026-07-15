@@ -41,12 +41,12 @@ test('normaliseRoute adds leading slash and trims trailing slash', () => {
 
 test('buildDeepLinkUrl builds a canonical URL with params', () => {
   const url = deepLinkService.buildDeepLinkUrl('/food-on-campus', { id: '123' });
-  assert.equal(url, 'https://app.atlasskilltech.app/food-on-campus?id=123');
+  assert.equal(url, 'https://deeplink.atlasskilltech.app/food-on-campus?id=123');
 });
 
 test('buildDeepLinkUrl normalises a route without a leading slash', () => {
   const url = deepLinkService.buildDeepLinkUrl('announcements');
-  assert.equal(url, 'https://app.atlasskilltech.app/announcements');
+  assert.equal(url, 'https://deeplink.atlasskilltech.app/announcements');
 });
 
 test('buildDeepLinkUrl rejects an empty route', () => {

@@ -1,5 +1,5 @@
 # ---------------------------------------------------------------------------
-# Nginx reverse proxy for app.atlasskilltech.app -> Node deep-linking backend.
+# Nginx reverse proxy for deeplink.atlasskilltech.app -> Node deep-linking backend.
 #
 # The Node app listens on 127.0.0.1:3000. Nginx terminates TLS for the
 # subdomain and forwards everything (including /.well-known/*) to Node WITHOUT
@@ -11,14 +11,14 @@
 server {
     listen 80;
     listen [::]:80;
-    server_name app.atlasskilltech.app;
+    server_name deeplink.atlasskilltech.app;
     return 301 https://$host$request_uri;
 }
 
 server {
     listen 443 ssl http2;
     listen [::]:443 ssl http2;
-    server_name app.atlasskilltech.app;
+    server_name deeplink.atlasskilltech.app;
 
     # SSL — use a wildcard cert *.atlasskilltech.app or add this subdomain to
     # your existing certificate.

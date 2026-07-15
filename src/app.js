@@ -14,7 +14,7 @@ const { handleFallback } = require('./controllers/fallbackController');
 
 const app = express();
 
-// Behind Nginx/Apache which terminates TLS for app.atlasskilltech.app.
+// Behind Nginx/Apache which terminates TLS for deeplink.atlasskilltech.app.
 if (config.trustProxy) app.set('trust proxy', true);
 
 // Views (EJS) for the desktop fallback landing page.

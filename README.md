@@ -3,7 +3,7 @@
 Node.js + Express + EJS + MySQL backend that powers **App Links (Android)** and
 **Universal Links (iOS)** for the ATLAS Tech App.
 
-When a user taps a link such as `https://app.atlasskilltech.app/food-on-campus`
+When a user taps a link such as `https://deeplink.atlasskilltech.app/food-on-campus`
 (shared via WhatsApp, email or SMS), the OS opens it **directly in the app**. If
 the app isn't installed, the browser hits this backend and is redirected to the
 Play Store / App Store instead.
@@ -26,7 +26,7 @@ a valid deep link with **no app update**.
 | 6 | Health check | `GET /healthz` |
 
 All of this runs as a single Node process **behind Nginx/Apache**, which
-terminates TLS for the dedicated subdomain `app.atlasskilltech.app`.
+terminates TLS for the dedicated subdomain `deeplink.atlasskilltech.app`.
 
 ---
 
@@ -52,7 +52,7 @@ the full list. The important ones:
 
 | Variable | Meaning |
 |---|---|
-| `DEEPLINK_HOST` | Public host used to build links (`app.atlasskilltech.app`) |
+| `DEEPLINK_HOST` | Public host used to build links (`deeplink.atlasskilltech.app`) |
 | `DB_*` | Existing ERP MySQL connection |
 | `DB_MENU_TABLE` / `DB_MENU_*_COLUMN` | Map to your real menu schema |
 | `ANDROID_PACKAGE_NAME` | `com.atlas.tech` |
@@ -157,7 +157,7 @@ Returns deep-linkable menu items enriched with a ready-to-share URL:
       "type": "item",
       "label": "Food on Campus",
       "route": "/food-on-campus",
-      "deepLinkUrl": "https://app.atlasskilltech.app/food-on-campus",
+      "deepLinkUrl": "https://deeplink.atlasskilltech.app/food-on-campus",
       "isDeepLinkable": true
     }
   ]
@@ -171,16 +171,16 @@ changes if the domain ever changes.
 
 ```bash
 # POST (JSON body)
-curl -X POST https://app.atlasskilltech.app/erp/api/deeplink \
+curl -X POST https://deeplink.atlasskilltech.app/erp/api/deeplink \
   -H 'Content-Type: application/json' \
   -d '{"route":"/food-on-campus","params":{"id":"123"}}'
 
 # GET (query params)
-curl 'https://app.atlasskilltech.app/erp/api/deeplink?route=/food-on-campus'
+curl 'https://deeplink.atlasskilltech.app/erp/api/deeplink?route=/food-on-campus'
 ```
 
 ```json
-{ "status": 1, "url": "https://app.atlasskilltech.app/food-on-campus?id=123" }
+{ "status": 1, "url": "https://deeplink.atlasskilltech.app/food-on-campus?id=123" }
 ```
 
 ---
@@ -209,9 +209,9 @@ subdomain. Examples are in `deploy/`:
 - `deploy/apache.conf.example`
 - `deploy/atlas-deeplink.service.example` (systemd)
 
-DNS: add an `A`/`CNAME` record for `app` pointing at the same server as
+DNS: add an `A`/`CNAME` record for `deeplink` pointing at the same server as
 `www.atlasskilltech.app`, and make sure the TLS certificate covers
-`app.atlasskilltech.app` (a wildcard `*.atlasskilltech.app` works).
+`deeplink.atlasskilltech.app` (a wildcard `*.atlasskilltech.app` works).
 
 ---
 
@@ -220,14 +220,14 @@ DNS: add an `A`/`CNAME` record for `app` pointing at the same server as
 ```bash
 # Android (device/emulator with the app installed)
 adb shell am start -a android.intent.action.VIEW \
-  -d "https://app.atlasskilltech.app/food-on-campus" com.atlas.tech
+  -d "https://deeplink.atlasskilltech.app/food-on-campus" com.atlas.tech
 
 # iOS — open the link in Safari or Notes; it should open the app.
 
 # Fallback — uninstall the app, tap the link, confirm it goes to the store.
 
 # Verify Google indexed the assetlinks statement:
-curl "https://digitalassetlinks.googleapis.com/v1/statements:list?source.web.site=https://app.atlasskilltech.app&relation=delegate_permission/common.handle_all_urls"
+curl "https://digitalassetlinks.googleapis.com/v1/statements:list?source.web.site=https://deeplink.atlasskilltech.app&relation=delegate_permission/common.handle_all_urls"
 ```
 
 Local smoke test without a proxy:

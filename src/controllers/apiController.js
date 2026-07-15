@@ -40,7 +40,7 @@ async function menus(req, res, next) {
  * Request (POST body or GET query):
  *   { "route": "/food-on-campus", "params": { "id": "123" } }
  * Response:
- *   { "status": 1, "url": "https://app.atlasskilltech.app/food-on-campus?id=123" }
+ *   { "status": 1, "url": "https://deeplink.atlasskilltech.app/food-on-campus?id=123" }
  */
 function generateDeepLink(req, res) {
   const source = req.method === 'GET' ? req.query : req.body || {};

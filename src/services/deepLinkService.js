@@ -11,7 +11,7 @@ const menuModel = require('../models/menuModel');
 /**
  * Build a fully-qualified deep-link URL for a route, with optional query
  * params. e.g. buildDeepLinkUrl('/food-on-campus', { id: '123' })
- *        -> "https://app.atlasskilltech.app/food-on-campus?id=123"
+ *        -> "https://deeplink.atlasskilltech.app/food-on-campus?id=123"
  */
 function buildDeepLinkUrl(route, params = {}) {
   const path = menuModel.normaliseRoute(route);

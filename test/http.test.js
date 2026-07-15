@@ -71,7 +71,7 @@ test('GET /erp/api/deeplink builds a URL', async () => {
   assert.equal(res.status, 200);
   const json = JSON.parse(res.body);
   assert.equal(json.status, 1);
-  assert.equal(json.url, 'https://app.atlasskilltech.app/food-on-campus');
+  assert.equal(json.url, 'https://deeplink.atlasskilltech.app/food-on-campus');
 });
 
 test('POST /erp/api/deeplink with params', async () => {
@@ -81,7 +81,7 @@ test('POST /erp/api/deeplink with params', async () => {
   });
   assert.equal(res.status, 200);
   const json = JSON.parse(res.body);
-  assert.equal(json.url, 'https://app.atlasskilltech.app/food-on-campus?id=123');
+  assert.equal(json.url, 'https://deeplink.atlasskilltech.app/food-on-campus?id=123');
 });
 
 test('POST /erp/api/deeplink without route -> 400', async () => {
