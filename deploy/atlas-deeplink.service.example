@@ -1,0 +1,26 @@
+# ---------------------------------------------------------------------------
+# systemd unit for the ATLAS deep-linking backend.
+# Copy to /etc/systemd/system/atlas-deeplink.service, then:
+#   systemctl daemon-reload
+#   systemctl enable --now atlas-deeplink
+# ---------------------------------------------------------------------------
+[Unit]
+Description=ATLAS Deep Linking backend
+After=network.target mysql.service
+
+[Service]
+Type=simple
+WorkingDirectory=/var/www/atlas-deeplink
+EnvironmentFile=/var/www/atlas-deeplink/.env
+ExecStart=/usr/bin/node src/server.js
+Restart=on-failure
+RestartSec=5
+User=www-data
+Group=www-data
+# Harden a little.
+NoNewPrivileges=true
+ProtectSystem=full
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

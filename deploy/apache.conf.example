@@ -1,0 +1,32 @@
+# ---------------------------------------------------------------------------
+# Apache virtual host for app.atlasskilltech.app -> Node deep-linking backend.
+#
+# Requires: mod_proxy, mod_proxy_http, mod_ssl, mod_rewrite.
+#   a2enmod proxy proxy_http ssl rewrite headers
+#
+# The Node app listens on 127.0.0.1:3000. Apache terminates TLS for the
+# subdomain and reverse-proxies everything to Node with no redirects, which is
+# required for App Links / Universal Links validation.
+# ---------------------------------------------------------------------------
+
+<VirtualHost *:80>
+    ServerName app.atlasskilltech.app
+    RewriteEngine On
+    RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+</VirtualHost>
+
+<VirtualHost *:443>
+    ServerName app.atlasskilltech.app
+
+    SSLEngine on
+    # Use a wildcard cert *.atlasskilltech.app or add this subdomain to the cert.
+    SSLCertificateFile      /etc/letsencrypt/live/atlasskilltech.app/fullchain.pem
+    SSLCertificateKeyFile   /etc/letsencrypt/live/atlasskilltech.app/privkey.pem
+
+    ProxyPreserveHost On
+    ProxyPass         / http://127.0.0.1:3000/
+    ProxyPassReverse  / http://127.0.0.1:3000/
+
+    RequestHeader set X-Forwarded-Proto "https"
+    RequestHeader set X-Forwarded-Host  "app.atlasskilltech.app"
+</VirtualHost>
